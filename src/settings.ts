@@ -38,5 +38,21 @@ export class ActionManagerSettingsTab extends PluginSettingTab {
         let { containerEl } = this;
 
         containerEl.empty();
+
+        Object.keys(this.plugin.settings.directories).forEach(dirType => {
+            new Setting(containerEl)
+                .setName(dirType)
+                .setDesc("Default location for creating files of type " + dirType)
+                .addDropdown(dropdown => {
+                    this.app.vault.getAllLoadedFiles().filter((f: TAbstractFile) => f instanceof TFolder).forEach(folder => dropdown.addOption(folder.path, folder.path));
+
+                    dropdown
+                        .setValue(this.plugin.settings.directories[dirType])
+                        .onChange(async (value) => {
+                            this.plugin.settings.directories[dirType] = value;
+                            await this.plugin.saveSettings();
+                        });
+                });
+        });
     }
 }
