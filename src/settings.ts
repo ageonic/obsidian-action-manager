@@ -1,4 +1,6 @@
+import { App, PluginSettingTab, Setting, TAbstractFile, TFolder } from "obsidian";
 import { Action, Meta } from "./core/types";
+import ActionManager from "./main";
 
 export interface ActionManagerSettings {
     directories: {
@@ -23,3 +25,18 @@ export const DEFAULT_SETTINGS: Partial<ActionManagerSettings> = {
         [Meta.Project]: "/",
     }
 };
+
+export class ActionManagerSettingsTab extends PluginSettingTab {
+    plugin: ActionManager;
+
+    constructor(app: App, plugin: ActionManager) {
+        super(app, plugin);
+        this.plugin = plugin;
+    }
+
+    display(): void {
+        let { containerEl } = this;
+
+        containerEl.empty();
+    }
+}
