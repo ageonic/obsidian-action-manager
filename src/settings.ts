@@ -1,6 +1,8 @@
-import { App, PluginSettingTab, Setting, TAbstractFile, TFolder } from "obsidian";
-import { Action, Meta } from "./core/types";
-import ActionManager from "./main";
+import { getAllFolders } from 'core/describe';
+import { Action, Meta } from 'core/types';
+import { App, PluginSettingTab, Setting } from 'obsidian';
+
+import ActionManager from './main';
 
 export interface ActionManagerSettings {
     core: {
@@ -133,7 +135,7 @@ export class ActionManagerSettingsTab extends PluginSettingTab {
                 .setName('Location')
                 .setDesc(`The default location for storing ${describe.pluralLabel}.`)
                 .addDropdown(dropdown => {
-                    this.app.vault.getAllLoadedFiles().filter((f: TAbstractFile) => f instanceof TFolder).forEach(folder => dropdown.addOption(folder.path, folder.path));
+                    getAllFolders().forEach(folder => dropdown.addOption(folder.path, folder.path));
 
                     dropdown
                         .setValue(spec.defaultLocation)
