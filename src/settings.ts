@@ -70,37 +70,6 @@ export const DEFAULT_SETTINGS: Partial<ActionManagerSettings> = {
     }
 };
 
-const typeDescribe = {
-    [Action.Task]: {
-        label: "Task",
-        pluralLabel: "Tasks"
-    },
-    [Action.Activity]: {
-        label: "Activity",
-        pluralLabel: "Activities"
-    },
-    [Action.Reminder]: {
-        label: "Reminder",
-        pluralLabel: "Reminders"
-    },
-    [Action.FollowUp]: {
-        label: "Follow Up",
-        pluralLabel: "Follow Ups"
-    },
-    [Meta.Organization]: {
-        label: "Organization",
-        pluralLabel: "Organizations"
-    },
-    [Meta.Individual]: {
-        label: "Individual",
-        pluralLabel: "Individuals"
-    },
-    [Meta.Project]: {
-        label: "Project",
-        pluralLabel: "Projects"
-    },
-}
-
 export class ActionManagerSettingsTab extends PluginSettingTab {
     plugin: ActionManager;
 
@@ -114,11 +83,29 @@ export class ActionManagerSettingsTab extends PluginSettingTab {
 
         containerEl.empty();
 
+        this.renderCoreSettings(containerEl);
+    }
+
+    renderHeader(containerEl: HTMLElement, level: keyof HTMLElementTagNameMap, text: string) {
+        containerEl.createEl(level, { text: text });
+    }
+
+    renderCoreSettings(containerEl: HTMLElement) {
+        const typeDescribe = {
+            [Action.Task]: { label: "Task", pluralLabel: "Tasks" },
+            [Action.Activity]: { label: "Activity", pluralLabel: "Activities" },
+            [Action.Reminder]: { label: "Reminder", pluralLabel: "Reminders" },
+            [Action.FollowUp]: { label: "Follow Up", pluralLabel: "Follow Ups" },
+            [Meta.Organization]: { label: "Organization", pluralLabel: "Organizations" },
+            [Meta.Individual]: { label: "Individual", pluralLabel: "Individuals" },
+            [Meta.Project]: { label: "Project", pluralLabel: "Projects" },
+        }
+
         Object.keys(this.plugin.settings.core).forEach(coreType => {
             const describe = typeDescribe[coreType as Action | Meta];
             const spec = this.plugin.settings.core[coreType as Action | Meta];
 
-            containerEl.createEl("h2", { text: describe.pluralLabel });
+            this.renderHeader(containerEl, "h2", describe.pluralLabel);
 
             new Setting(containerEl)
                 .setName('Naming Format')
