@@ -1,12 +1,12 @@
 export enum Action {
-    Task = "Task",
-    Reminder = "Reminder",
-    FollowUp = "Follow Up",
-    Activity = "Activity",
+    Task = "task",
+    Reminder = "reminder",
+    FollowUp = "followup",
+    Activity = "activity",
 }
 
 export enum Meta {
-    Organization = "Organization",
-    Individual = "Individual",
-    Project = "Project",
+    Organization = "organization",
+    Individual = "individual",
+    Project = "project",
 }
