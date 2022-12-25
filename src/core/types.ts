@@ -1,4 +1,5 @@
 export enum Action {
+    Project = "project",
     Task = "task",
     Reminder = "reminder",
     FollowUp = "followup",
@@ -8,5 +9,4 @@ export enum Action {
 export enum Meta {
     Organization = "organization",
     Individual = "individual",
-    Project = "project",
 }

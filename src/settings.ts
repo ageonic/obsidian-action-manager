@@ -6,6 +6,10 @@ import ActionManager from './main';
 
 export interface ActionManagerSettings {
     core: {
+        [Action.Project]: {
+            nameFormat: string,
+            defaultLocation: string,
+        },
         [Action.Task]: {
             nameFormat: string,
             defaultLocation: string,
@@ -30,15 +34,15 @@ export interface ActionManagerSettings {
             nameFormat: string,
             defaultLocation: string,
         },
-        [Meta.Project]: {
-            nameFormat: string,
-            defaultLocation: string,
-        },
     }
 }
 
 export const DEFAULT_SETTINGS: Partial<ActionManagerSettings> = {
     core: {
+        [Action.Project]: {
+            nameFormat: "PRJ{YY}{DD}{00}",
+            defaultLocation: "/",
+        },
         [Action.Task]: {
             nameFormat: "TSK{YY}{DD}{00}",
             defaultLocation: "/",
@@ -61,10 +65,6 @@ export const DEFAULT_SETTINGS: Partial<ActionManagerSettings> = {
         },
         [Meta.Individual]: {
             nameFormat: "IND{YY}{DD}{00}",
-            defaultLocation: "/",
-        },
-        [Meta.Project]: {
-            nameFormat: "PRJ{YY}{DD}{00}",
             defaultLocation: "/",
         },
     }
@@ -98,7 +98,7 @@ export class ActionManagerSettingsTab extends PluginSettingTab {
             [Action.FollowUp]: { label: "Follow Up", pluralLabel: "Follow Ups" },
             [Meta.Organization]: { label: "Organization", pluralLabel: "Organizations" },
             [Meta.Individual]: { label: "Individual", pluralLabel: "Individuals" },
-            [Meta.Project]: { label: "Project", pluralLabel: "Projects" },
+            [Action.Project]: { label: "Project", pluralLabel: "Projects" },
         }
 
         Object.keys(this.plugin.settings.core).forEach(coreType => {
