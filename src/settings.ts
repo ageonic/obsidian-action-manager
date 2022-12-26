@@ -9,30 +9,37 @@ export interface ActionManagerSettings {
         [Action.Project]: {
             nameFormat: string,
             defaultLocation: string,
+            templatePath: string,
         },
         [Action.Task]: {
             nameFormat: string,
             defaultLocation: string,
+            templatePath: string,
         },
         [Action.Activity]: {
             nameFormat: string,
             defaultLocation: string,
+            templatePath: string,
         },
         [Action.Reminder]: {
             nameFormat: string,
             defaultLocation: string,
+            templatePath: string,
         },
         [Action.FollowUp]: {
             nameFormat: string,
             defaultLocation: string,
+            templatePath: string,
         },
         [Meta.Organization]: {
             nameFormat: string,
             defaultLocation: string,
+            templatePath: string,
         },
         [Meta.Individual]: {
             nameFormat: string,
             defaultLocation: string,
+            templatePath: string,
         },
     },
     maxAutoNumber: {
@@ -51,30 +58,37 @@ export const DEFAULT_SETTINGS: Partial<ActionManagerSettings> = {
         [Action.Project]: {
             nameFormat: "PRJ{YY}{DD}{00}",
             defaultLocation: "/",
+            templatePath: "",
         },
         [Action.Task]: {
             nameFormat: "TSK{YY}{DD}{00}",
             defaultLocation: "/",
+            templatePath: "",
         },
         [Action.Activity]: {
             nameFormat: "ACT{YY}{DD}{00}",
             defaultLocation: "/",
+            templatePath: "",
         },
         [Action.Reminder]: {
             nameFormat: "RMD{YY}{DD}{00}",
             defaultLocation: "/",
+            templatePath: "",
         },
         [Action.FollowUp]: {
             nameFormat: "FLP{YY}{DD}{00}",
             defaultLocation: "/",
+            templatePath: "",
         },
         [Meta.Organization]: {
             nameFormat: "ORG{YY}{DD}{00}",
             defaultLocation: "/",
+            templatePath: "",
         },
         [Meta.Individual]: {
             nameFormat: "IND{YY}{DD}{00}",
             defaultLocation: "/",
+            templatePath: "",
         },
     },
     maxAutoNumber: {
@@ -149,6 +163,17 @@ export class ActionManagerSettingsTab extends PluginSettingTab {
                             await this.plugin.saveSettings();
                         });
                 });
+
+            new Setting(containerEl)
+                .setName('Path to Template')
+                .setDesc(`The template used to generate ${describe.pluralLabel}`)
+                .addText(text => text
+                    .setValue(spec.templatePath)
+                    .onChange(async (value) => {
+                        spec.templatePath = value;
+                        await this.plugin.saveSettings();
+                    })
+                );
         });
     }
 }
