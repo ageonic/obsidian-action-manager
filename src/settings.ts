@@ -34,7 +34,16 @@ export interface ActionManagerSettings {
             nameFormat: string,
             defaultLocation: string,
         },
-    }
+    },
+    maxAutoNumber: {
+        [Action.Project]: number,
+        [Action.Task]: number,
+        [Action.Activity]: number,
+        [Action.FollowUp]: number,
+        [Action.Reminder]: number,
+        [Meta.Organization]: number,
+        [Meta.Individual]: number,
+    },
 }
 
 export const DEFAULT_SETTINGS: Partial<ActionManagerSettings> = {
@@ -67,7 +76,16 @@ export const DEFAULT_SETTINGS: Partial<ActionManagerSettings> = {
             nameFormat: "IND{YY}{DD}{00}",
             defaultLocation: "/",
         },
-    }
+    },
+    maxAutoNumber: {
+        [Action.Project]: -1,
+        [Action.Task]: -1,
+        [Action.Activity]: -1,
+        [Action.FollowUp]: -1,
+        [Action.Reminder]: -1,
+        [Meta.Organization]: -1,
+        [Meta.Individual]: -1,
+    },
 };
 
 export class ActionManagerSettingsTab extends PluginSettingTab {
