@@ -12,7 +12,7 @@ export default class FileGenerator {
         this.plugin = plugin;
     }
 
-    generateId(fileType: Action | Meta) {
+    private generateId(fileType: Action | Meta) {
         let template = this.plugin.settings.core[fileType].nameFormat;
         let serialNumber = this.plugin.settings.maxAutoNumber[fileType] + 1;
 
@@ -27,7 +27,7 @@ export default class FileGenerator {
             .replace('{00}', serialNumber.toString().padStart(2, '0'));
     }
 
-    async generateContent(fileType: Action | Meta, props: Properties) {
+    private async generateContent(fileType: Action | Meta, props: Properties) {
         const templatePath = this.plugin.settings.core[fileType].templatePath;
 
         let parser = new FrontMatterParser();
