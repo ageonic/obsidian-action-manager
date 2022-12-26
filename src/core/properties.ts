@@ -1,7 +1,6 @@
 import { DateField, DateTimeField, LinkField, TextField } from "./fields";
 
 export interface Properties {
-    id: TextField,
     createdDate: DateTimeField,
 }
 
