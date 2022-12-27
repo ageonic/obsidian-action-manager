@@ -13,6 +13,24 @@ export default class FileGenerator {
         this.plugin = plugin;
     }
 
+    public async create(fileType: Action | Meta, props: Properties) {
+        const fileMeta = this.generateFileMeta(fileType);
+        const basePath = fileMeta.path.substring(0, fileMeta.path.lastIndexOf('/'));
+        const fileContent = await this.generateContent(fileType, props, fileMeta.id);
+    
+        try {
+            if (!(await app.vault.adapter.exists(basePath)))
+                await app.vault.createFolder(basePath);
+
+            await app.vault.create(fileMeta.path, fileContent);
+
+            this.plugin.settings.maxAutoNumber[fileType] = fileMeta.serialNumber;
+            this.plugin.saveSettings();
+        } catch (error) {
+            new Notice("Action Manager: " + error);
+        }
+    }
+
     private generateFileMeta(fileType: Action | Meta): { id: string, serialNumber: number, path: string } {
         const baseDir = this.plugin.settings.core[fileType].defaultLocation;
         let template = this.plugin.settings.core[fileType].nameFormat;
@@ -39,7 +57,7 @@ export default class FileGenerator {
         return { id, serialNumber, path };
     }
 
-    private async generateContent(fileType: Action | Meta, props: Properties) {
+    private async generateContent(fileType: Action | Meta, props: Properties, id: string) {
         const templatePath = this.plugin.settings.core[fileType].templatePath;
 
         let parser = new FrontMatterParser();
@@ -47,6 +65,7 @@ export default class FileGenerator {
         if (templatePath)
             await parser.load(templatePath);
 
+        parser.addProperty('id', id);
         parser.addAllProperties(renderFields(props));
 
         return parser.buildContent();
