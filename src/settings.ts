@@ -6,68 +6,100 @@ import ActionManager from './main';
 
 export interface ActionManagerSettings {
     core: {
+        [Action.Project]: {
+            nameFormat: string,
+            defaultLocation: string,
+            templatePath: string,
+        },
         [Action.Task]: {
             nameFormat: string,
             defaultLocation: string,
+            templatePath: string,
         },
         [Action.Activity]: {
             nameFormat: string,
             defaultLocation: string,
+            templatePath: string,
         },
         [Action.Reminder]: {
             nameFormat: string,
             defaultLocation: string,
+            templatePath: string,
         },
         [Action.FollowUp]: {
             nameFormat: string,
             defaultLocation: string,
+            templatePath: string,
         },
         [Meta.Organization]: {
             nameFormat: string,
             defaultLocation: string,
+            templatePath: string,
         },
         [Meta.Individual]: {
             nameFormat: string,
             defaultLocation: string,
+            templatePath: string,
         },
-        [Meta.Project]: {
-            nameFormat: string,
-            defaultLocation: string,
-        },
-    }
+    },
+    maxAutoNumber: {
+        [Action.Project]: number,
+        [Action.Task]: number,
+        [Action.Activity]: number,
+        [Action.FollowUp]: number,
+        [Action.Reminder]: number,
+        [Meta.Organization]: number,
+        [Meta.Individual]: number,
+    },
 }
 
 export const DEFAULT_SETTINGS: Partial<ActionManagerSettings> = {
     core: {
+        [Action.Project]: {
+            nameFormat: "PRJ{YY}{DD}{00}",
+            defaultLocation: "/",
+            templatePath: "",
+        },
         [Action.Task]: {
             nameFormat: "TSK{YY}{DD}{00}",
             defaultLocation: "/",
+            templatePath: "",
         },
         [Action.Activity]: {
             nameFormat: "ACT{YY}{DD}{00}",
             defaultLocation: "/",
+            templatePath: "",
         },
         [Action.Reminder]: {
             nameFormat: "RMD{YY}{DD}{00}",
             defaultLocation: "/",
+            templatePath: "",
         },
         [Action.FollowUp]: {
             nameFormat: "FLP{YY}{DD}{00}",
             defaultLocation: "/",
+            templatePath: "",
         },
         [Meta.Organization]: {
             nameFormat: "ORG{YY}{DD}{00}",
             defaultLocation: "/",
+            templatePath: "",
         },
         [Meta.Individual]: {
             nameFormat: "IND{YY}{DD}{00}",
             defaultLocation: "/",
+            templatePath: "",
         },
-        [Meta.Project]: {
-            nameFormat: "PRJ{YY}{DD}{00}",
-            defaultLocation: "/",
-        },
-    }
+    },
+    maxAutoNumber: {
+        [Action.Project]: -1,
+        [Action.Task]: -1,
+        [Action.Activity]: -1,
+        [Action.FollowUp]: -1,
+        [Action.Reminder]: -1,
+        [Meta.Organization]: -1,
+        [Meta.Individual]: -1,
+    },
 };
 
 export class ActionManagerSettingsTab extends PluginSettingTab {
@@ -98,7 +130,7 @@ export class ActionManagerSettingsTab extends PluginSettingTab {
             [Action.FollowUp]: { label: "Follow Up", pluralLabel: "Follow Ups" },
             [Meta.Organization]: { label: "Organization", pluralLabel: "Organizations" },
             [Meta.Individual]: { label: "Individual", pluralLabel: "Individuals" },
-            [Meta.Project]: { label: "Project", pluralLabel: "Projects" },
+            [Action.Project]: { label: "Project", pluralLabel: "Projects" },
         }
 
         Object.keys(this.plugin.settings.core).forEach(coreType => {
@@ -131,6 +163,17 @@ export class ActionManagerSettingsTab extends PluginSettingTab {
                             await this.plugin.saveSettings();
                         });
                 });
+
+            new Setting(containerEl)
+                .setName('Path to Template')
+                .setDesc(`The template used to generate ${describe.pluralLabel}`)
+                .addText(text => text
+                    .setValue(spec.templatePath)
+                    .onChange(async (value) => {
+                        spec.templatePath = value;
+                        await this.plugin.saveSettings();
+                    })
+                );
         });
     }
 }

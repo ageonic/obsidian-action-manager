@@ -17,7 +17,7 @@ export function getAllFolders(): TFolder[] {
     return getAllFilesAndFolders().filter(f => f instanceof TFolder).map(f => f as TFolder);
 }
 
-export function getFileByType(type: Action | Meta): TFile[] {
+export function getFilesByType(type: Action | Meta): TFile[] {
     return getAllFiles().filter(f =>
         getFrontmatterForFile(f)?.type == type
     )
